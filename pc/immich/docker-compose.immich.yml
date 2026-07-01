@@ -17,6 +17,9 @@ services:
       options:
         max-size: "20m"
         max-file: "5"
+    env_file:
+      - .env
+      - ../.env
     volumes:
       - ${MEDIA_ROOT}/pictures:/data
       - ${MEDIA_ROOT}/pictures:/Pictures
@@ -35,6 +38,9 @@ services:
       options:
         max-size: "20m"
         max-file: "5"
+    env_file:
+      - .env
+      - ../.env
     volumes:
       - model-cache:/cache
 

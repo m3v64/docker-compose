@@ -12,7 +12,7 @@ services:
         max-size: "10m"
         max-file: "3"
     environment:
-      KOMF_KOMGA_BASE_URI: http://komga:25600
+      KOMF_KOMGA_BASE_URI: http://localhost:25600
       KOMF_KOMGA_USER: max@m3v.dev
       KOMF_KOMGA_PASSWORD: ${KOMGA_PASSWORD}
       KOMF_LOG_LEVEL: INFO

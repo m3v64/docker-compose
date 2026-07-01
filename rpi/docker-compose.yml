@@ -33,6 +33,11 @@ include:
       - .env
       - m3v-api/.env
 
+  - path: feishin/docker-compose.feishin.yml
+    env_file:
+      - .env
+      - feishin/.env
+
   - path: uptime-kuma/docker-compose.uptime-kuma.yml
     env_file:
       - .env
