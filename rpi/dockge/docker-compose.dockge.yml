@@ -13,8 +13,6 @@ services:
       DOCKGE_STACKS_DIR: ${COMPOSE_ROOT}
       DOCKGE_ENABLE_CONSOLE: "true"
       TZ: ${TZ}
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${COMPOSE_ROOT}:${COMPOSE_ROOT}
@@ -23,8 +21,3 @@ services:
       - "5001:5001"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

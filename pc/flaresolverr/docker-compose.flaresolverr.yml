@@ -17,8 +17,3 @@ services:
       CAPTCHA_SOLVER: none
       TZ: ${TZ}
     network_mode: "service:gluetun"
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

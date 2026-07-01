@@ -25,8 +25,3 @@ services:
       - "4533:4533"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

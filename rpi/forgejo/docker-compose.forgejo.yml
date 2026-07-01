@@ -32,11 +32,6 @@ services:
       - "222:22"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "20m"
-        max-file: "5"
 
   docker-in-docker:
     image: docker:dind
@@ -56,11 +51,6 @@ services:
       - --tls=false
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   runner:
     image: data.forgejo.org/forgejo/runner:12
@@ -81,8 +71,3 @@ services:
       - ${DATA_ROOT}/forgejo-runner:/data
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

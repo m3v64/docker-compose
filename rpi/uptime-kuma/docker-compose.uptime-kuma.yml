@@ -9,8 +9,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${COMPOSE_ROOT}:${COMPOSE_ROOT}
@@ -19,8 +17,3 @@ services:
       - "3001:3001"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

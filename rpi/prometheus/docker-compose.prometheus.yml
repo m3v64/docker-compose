@@ -16,11 +16,6 @@ services:
       - "9090:9090"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
 
 volumes:
   prometheus_data:

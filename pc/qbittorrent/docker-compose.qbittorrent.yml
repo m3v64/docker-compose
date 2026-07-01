@@ -21,8 +21,3 @@ services:
       - ${DATA_ROOT}/qbittorrent:/config
       - ${MEDIA_ROOT}:/media
     network_mode: "service:gluetun"
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

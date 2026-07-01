@@ -19,8 +19,3 @@ services:
     volumes:
       - ${DATA_ROOT}/prowlarr:/config
     network_mode: "service:gluetun"
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

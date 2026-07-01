@@ -20,8 +20,3 @@ services:
       - "7359:7359/udp"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

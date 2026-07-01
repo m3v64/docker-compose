@@ -3,16 +3,8 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7878/ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
     environment:
       TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
     volumes:
       - ${DATA_ROOT}/radarr:/config
       - ${MEDIA_ROOT}:/media
@@ -20,8 +12,3 @@ services:
       - "7878:7878"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

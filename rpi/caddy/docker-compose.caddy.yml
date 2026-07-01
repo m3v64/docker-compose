@@ -9,8 +9,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - ${DATA_ROOT}/caddy/Caddyfile:/etc/caddy/Caddyfile
       - ${DATA_ROOT}/caddy/data:/data
@@ -22,8 +20,3 @@ services:
       - "2025:2025"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

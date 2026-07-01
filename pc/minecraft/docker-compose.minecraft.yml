@@ -38,8 +38,3 @@ services:
       - "25565:25565"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "5"

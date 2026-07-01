@@ -96,8 +96,3 @@ services:
       - "9181:9180"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

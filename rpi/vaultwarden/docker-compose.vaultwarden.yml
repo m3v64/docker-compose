@@ -12,19 +12,11 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
     environment:
       DOMAIN: https://vault.${DOMAIN}
-      SIGNUPS_ALLOWED: "false"
     volumes:
       - ${DATA_ROOT}/vaultwarden:/data
     ports:
       - "80:80"
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

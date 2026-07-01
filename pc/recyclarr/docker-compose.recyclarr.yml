@@ -12,8 +12,3 @@ services:
       - ${DATA_ROOT}/recyclarr:/config
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

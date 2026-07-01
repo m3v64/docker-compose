@@ -33,8 +33,3 @@ services:
       - "8191:8191"  # flaresolverr
     networks:
       - net
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"

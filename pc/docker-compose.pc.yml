@@ -8,12 +8,12 @@ include:
       - .env
       - feishin/.env
 
-  - path: gluetun/docker-compose.gluetun.yml
+  - path: gluetun/docker-compose.vpn-stack.yml
     env_file:
       - .env
       - gluetun/.env
 
-  - path: prowlarr/docker-compose.prowlarr.yml
+  - path: prowlarr/docker-compose.vpn-stack.yml
     env_file:
       - .env
 

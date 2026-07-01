@@ -6,10 +6,8 @@ services:
     container_name: immich_server
     restart: always
     depends_on:
-      redis:
-        condition: service_healthy
-      database:
-        condition: service_started
+      - redis
+      - database
     healthcheck:
       disable: false
     env_file:
@@ -20,11 +18,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - '2283:2283'
-    logging:
-      driver: json-file
-      options:
-        max-size: "20m"
-        max-file: "5"
 
   immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
@@ -36,11 +29,6 @@ services:
       - .env
     volumes:
       - model-cache:/cache
-    logging:
-      driver: json-file
-      options:
-        max-size: "20m"
-        max-file: "5"
 
   redis:
     image: docker.io/valkey/valkey:8@sha256:81db6d39e1bba3b3ff32bd3a1b19a6d69690f94a3954ec131277b9a26b95b3aa
@@ -48,11 +36,6 @@ services:
     restart: always
     healthcheck:
       test: redis-cli ping || exit 1
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
 
   database:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
@@ -67,11 +50,6 @@ services:
     volumes:
       - ${DATA_ROOT}/immich:/var/lib/postgresql/data
     shm_size: 128mb
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
 
 volumes:
   model-cache:
