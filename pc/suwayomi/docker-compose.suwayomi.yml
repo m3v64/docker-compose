@@ -1,0 +1,27 @@
+services:
+  suwayomi:
+    image: ghcr.io/suwayomi/tachidesk:latest
+    container_name: suwayomi
+    restart: unless-stopped
+    user: "1000:1000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4567/api/v1/settings/about"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      TZ: ${TZ}
+      EXTENSION_REPOS: '["https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json","https://raw.githubusercontent.com/suwayomi/tachiyomi-extension/repo/index.min.json"]'
+    volumes:
+      - ${MEDIA_ROOT}/manga:/home/suwayomi/.local/share/Tachidesk/downloads
+      - ${DATA_ROOT}/suwayomi:/home/suwayomi/.local/share/Tachidesk
+    ports:
+      - "4567:4567"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

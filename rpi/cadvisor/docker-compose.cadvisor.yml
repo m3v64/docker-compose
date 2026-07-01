@@ -1,0 +1,32 @@
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: unless-stopped
+    privileged: true
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command:
+      - --docker_only=true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/sys:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /run/containerd:/run/containerd:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /etc/machine-id:/etc/machine-id:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

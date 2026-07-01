@@ -1,0 +1,24 @@
+services:
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8191/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    environment:
+      LOG_LEVEL: info
+      CAPTCHA_SOLVER: none
+      TZ: ${TZ}
+    network_mode: "service:gluetun"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

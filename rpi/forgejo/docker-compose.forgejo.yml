@@ -1,0 +1,88 @@
+services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:15
+    container_name: forgejo
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      USER_UID: "1000"
+      USER_GID: "1000"
+      FORGEJO__DATABASE__DB_TYPE: sqlite3
+      FORGEJO__DATABASE__NAME: forgejoDB
+      FORGEJO__DATABASE__USER: ${FORGEJO_DB_USER}
+      FORGEJO__DATABASE__PASSWD: ${FORGEJO_DB_PASS}
+      FORGEJO__DATABASE__SQLITE_JOURNAL_MODE: WAL
+      FORGEJO__CACHE__ADAPTER: twoqueue
+      FORGEJO__CACHE__HOST: '{"size":100, "recent_ratio":0.25, "ghost_ratio":0.5}'
+      FORGEJO__REPOSITORY_SIGNING__DEFAULT_TRUST_MODEL: committer
+      FORGEJO__SECURITY__LOGIN_REMEMBER_DAYS: "90"
+      FORGEJO__SERVICE__ENABLE_CAPTCHA: "true"
+      FORGEJO__SERVICE__USERNAME_COOLDOWN_PERIOD: "14"
+      FORGEJO__SERVICE__MAX_USER_REDIRECTS: "3"
+    volumes:
+      - ${DATA_ROOT}/forgejo:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3000:3000"
+      - "222:22"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  docker-in-docker:
+    image: docker:dind
+    container_name: docker_dind
+    restart: unless-stopped
+    privileged: true
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    command:
+      - dockerd
+      - -H
+      - tcp://0.0.0.0:2375
+      - --tls=false
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  runner:
+    image: data.forgejo.org/forgejo/runner:12
+    container_name: forgejo-runner
+    restart: unless-stopped
+    user: "1001:1001"
+    depends_on:
+      docker-in-docker:
+        condition: service_healthy
+      forgejo:
+        condition: service_healthy
+    command: forgejo-runner daemon --config /data/runner-config.yml
+    links:
+      - docker-in-docker
+    environment:
+      DOCKER_HOST: tcp://docker-in-docker:2375
+    volumes:
+      - ${DATA_ROOT}/forgejo-runner:/data
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

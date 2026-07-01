@@ -1,0 +1,40 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "https://ipinfo.io/ip"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      VPN_SERVICE_PROVIDER: private internet access
+      OPENVPN_USER: ${PIA_USER}
+      OPENVPN_PASSWORD: ${PIA_PASSWORD}
+      SERVER_REGIONS: Netherlands
+      PORT_FORWARD_ONLY: "true"
+      VPN_PORT_FORWARDING: "on"
+      VPN_PORT_FORWARDING_UP_COMMAND: >-
+        /bin/sh -c 'for i in 1 2 3 4 5; do wget -qO- --keep-session-cookies --save-cookies /tmp/qbit_sid.txt --post-data "username=${QB_USERNAME}&password=${QB_PASSWORD}" http://127.0.0.1:8080/api/v2/auth/login && break || sleep 5; done && wget -qO- --load-cookies /tmp/qbit_sid.txt --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
+      VPN_PORT_FORWARDING_DOWN_COMMAND: >-
+        /bin/sh -c 'wget -qO- --load-cookies /tmp/qbit_sid.txt --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo\",\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
+      TZ: ${TZ}
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ${DATA_ROOT}/gluetun:/gluetun
+    ports:
+      - "9696:9696"  # prowlarr
+      - "8080:8080"  # qbittorrent
+      - "8191:8191"  # flaresolverr
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,24 @@
+services:
+  m3v-api:
+    image: m3v64/m3v-api:arm64
+    container_name: m3v-api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    environment:
+      ZELFREFLECTIE_PASSWORD: ${ZELFREFLECTIE_PASSWORD}
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    ports:
+      - "8000:8000"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

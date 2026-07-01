@@ -1,0 +1,45 @@
+services:
+  mc:
+    image: itzg/minecraft-server:latest
+    container_name: mc
+    restart: unless-stopped
+    cpus: "6.0"
+    tty: true
+    stdin_open: true
+    healthcheck:
+      test: mc-health
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    environment:
+      EULA: "TRUE"
+      TYPE: FORGE
+      VERSION: "1.20.1"
+      SERVER_PORT: "25565"
+      INIT_MEMORY: 16G
+      MAX_MEMORY: 32G
+      ICON: https://m3v.dev/assets/mc-icon.webp
+      OVERRIDE_ICON: "true"
+      MOTD: "~~~~~~~~~~~~<『mc.m3v.dev』>~~~~~~~~~~~~"
+      USE_AIKAR_FLAGS: "true"
+      TZ: ${TZ}
+      DIFFICULTY: "3"
+      ENABLE_COMMAND_BLOCK: "true"
+      SIMULATION_DISTANCE: "6"
+      VIEW_DISTANCE: "12"
+      SPAWN_PROTECTION: "1"
+      OPS: |-
+        m3v_
+      ALLOW_FLIGHT: "true"
+    volumes:
+      - C:\srv\media\minecraft\kerem-finn-2026:/data
+    ports:
+      - "25565:25565"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"

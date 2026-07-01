@@ -1,0 +1,26 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9696/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${DATA_ROOT}/prowlarr:/config
+    network_mode: "service:gluetun"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

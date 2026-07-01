@@ -1,0 +1,25 @@
+services:
+  komga:
+    image: ghcr.io/gotson/komga:latest
+    container_name: komga
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:25600/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ${DATA_ROOT}/komga:/config
+      - ${MEDIA_ROOT}/manga:/books
+    ports:
+      - "25600:25600"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

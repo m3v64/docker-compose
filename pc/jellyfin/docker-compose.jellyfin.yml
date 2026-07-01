@@ -1,0 +1,27 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8096/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ${DATA_ROOT}/jellyfin:/config
+      - ${DATA_ROOT}/jellyfin/cache:/cache
+      - ${MEDIA_ROOT}:/media
+    ports:
+      - "8096:8096"
+      - "7359:7359/udp"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

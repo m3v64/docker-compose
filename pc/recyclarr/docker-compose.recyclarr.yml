@@ -1,0 +1,19 @@
+services:
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    container_name: recyclarr
+    restart: unless-stopped
+    depends_on:
+      - sonarr
+      - radarr
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ${DATA_ROOT}/recyclarr:/config
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

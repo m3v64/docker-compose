@@ -1,0 +1,28 @@
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v2/app/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      WEBUI_PORT: "8080"
+    volumes:
+      - ${DATA_ROOT}/qbittorrent:/config
+      - ${MEDIA_ROOT}:/media
+    network_mode: "service:gluetun"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,29 @@
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:2019/config/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    volumes:
+      - ${DATA_ROOT}/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ${DATA_ROOT}/caddy/data:/data
+      - ${DATA_ROOT}/caddy/config:/config
+      - ${DATA_ROOT}/caddy/html:/html
+      - ${DATA_ROOT}/caddy/cloudflare-origin-cert:/cloudflare-origin-cert
+    ports:
+      - "443:443"
+      - "2025:2025"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

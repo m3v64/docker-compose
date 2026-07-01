@@ -1,0 +1,30 @@
+services:
+  dockge:
+    image: louislam/dockge:latest
+    container_name: dockge
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    environment:
+      DOCKGE_STACKS_DIR: ${COMPOSE_ROOT}
+      DOCKGE_ENABLE_CONSOLE: "true"
+      TZ: ${TZ}
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${COMPOSE_ROOT}:${COMPOSE_ROOT}
+      - ${DATA_ROOT}/dockge:/app/data
+    ports:
+      - "5001:5001"
+    networks:
+      - net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

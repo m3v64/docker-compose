@@ -1,0 +1,74 @@
+include:
+  # - path: cadvisor/docker-compose.cadvisor.yml
+  #   env_file:
+  #     - .env
+
+  - path: feishin/docker-compose.feishin.yml
+    env_file:
+      - .env
+      - feishin/.env
+
+  - path: gluetun/docker-compose.gluetun.yml
+    env_file:
+      - .env
+      - gluetun/.env
+
+  - path: prowlarr/docker-compose.prowlarr.yml
+    env_file:
+      - .env
+
+  - path: qbittorrent/docker-compose.qbittorrent.yml
+    env_file:
+      - .env
+
+  - path: flaresolverr/docker-compose.flaresolverr.yml
+    env_file:
+      - .env
+
+  - path: jellyfin/docker-compose.jellyfin.yml
+    env_file:
+      - .env
+
+  - path: navidrome/docker-compose.navidrome.yml
+    env_file:
+      - .env
+      - navidrome/.env
+
+  - path: radarr/docker-compose.radarr.yml
+    env_file:
+      - .env
+
+  - path: sonarr/docker-compose.sonarr.yml
+    env_file:
+      - .env
+
+  - path: recyclarr/docker-compose.recyclarr.yml
+    env_file:
+      - .env
+
+  - path: komga/docker-compose.komga.yml
+    env_file:
+      - .env
+
+  - path: komf/docker-compose.komf.yml
+    env_file:
+      - .env
+      - komf/.env
+
+  - path: suwayomi/docker-compose.suwayomi.yml
+    env_file:
+      - .env
+
+  - path: minecraft/docker-compose.minecraft.yml
+    env_file:
+      - .env
+
+  - path: immich/docker-compose.immich.yml
+    env_file:
+      - .env
+      - immich/.env
+
+networks:
+  net:
+    driver: bridge
+    attachable: true
