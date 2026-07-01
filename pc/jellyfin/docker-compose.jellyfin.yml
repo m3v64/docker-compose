@@ -17,8 +17,8 @@ services:
     environment:
       TZ: ${TZ}
     volumes:
-      - ${DATA_ROOT}/jellyfin:/config
-      - ${DATA_ROOT}/jellyfin/cache:/cache
+      - ${DATA_ROOT}\jellyfin:/config
+      - ${DATA_ROOT}\jellyfin/cache:/cache
       - ${MEDIA_ROOT}:/media
     ports:
       - "8096:8096"

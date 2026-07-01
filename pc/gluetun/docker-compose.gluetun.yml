@@ -31,7 +31,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ${DATA_ROOT}/gluetun:/gluetun
+      - ${DATA_ROOT}\gluetun:/gluetun
     ports:
       - "9696:9696"  # prowlarr
       - "8080:8080"  # qbittorrent

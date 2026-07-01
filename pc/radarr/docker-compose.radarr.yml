@@ -19,7 +19,7 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     volumes:
-      - ${DATA_ROOT}/radarr:/config
+      - ${DATA_ROOT}\radarr:/config
       - ${MEDIA_ROOT}:/media
     ports:
       - "7878:7878"

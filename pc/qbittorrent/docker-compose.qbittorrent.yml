@@ -23,6 +23,6 @@ services:
       PGID: ${PGID}
       WEBUI_PORT: "8080"
     volumes:
-      - ${DATA_ROOT}/qbittorrent:/config
+      - ${DATA_ROOT}\qbittorrent:/config
       - ${MEDIA_ROOT}:/media
     network_mode: "service:gluetun"

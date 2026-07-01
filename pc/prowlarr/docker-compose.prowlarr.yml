@@ -22,5 +22,5 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     volumes:
-      - ${DATA_ROOT}/prowlarr:/config
+      - ${DATA_ROOT}\prowlarr:/config
     network_mode: "service:gluetun"

@@ -16,6 +16,6 @@ services:
     environment:
       TZ: ${TZ}
     volumes:
-      - ${DATA_ROOT}/recyclarr:/config
+      - ${DATA_ROOT}\recyclarr:/config
     networks:
       - net

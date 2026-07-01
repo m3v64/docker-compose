@@ -19,7 +19,7 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
     volumes:
-      - ${DATA_ROOT}/sonarr:/config
+      - ${DATA_ROOT}\sonarr:/config
       - ${MEDIA_ROOT}:/media
     ports:
       - "8989:8989"

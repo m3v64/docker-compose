@@ -17,8 +17,8 @@ services:
     environment:
       TZ: ${TZ}
     volumes:
-      - ${DATA_ROOT}/komga:/config
-      - ${MEDIA_ROOT}/manga:/books
+      - ${DATA_ROOT}\komga:/config
+      - ${MEDIA_ROOT}\manga:/books
     ports:
       - "25600:25600"
     networks:

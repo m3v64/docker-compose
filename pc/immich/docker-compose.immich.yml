@@ -21,8 +21,8 @@ services:
       - .env
       - ../.env
     volumes:
-      - ${MEDIA_ROOT}/pictures:/data
-      - ${MEDIA_ROOT}/pictures:/Pictures
+      - ${MEDIA_ROOT}\pictures:/data
+      - ${MEDIA_ROOT}\pictures:/Pictures
       - /etc/localtime:/etc/localtime:ro
     ports:
       - '2283:2283'
@@ -72,7 +72,7 @@ services:
       POSTGRES_INITDB_ARGS: '--data-checksums'
       DB_STORAGE_TYPE: 'HDD'
     volumes:
-      - ${DATA_ROOT}/immich:/var/lib/postgresql/data
+      - ${DATA_ROOT}\immich:/var/lib/postgresql/data
     shm_size: 128mb
 
 volumes:

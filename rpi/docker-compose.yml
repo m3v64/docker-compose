@@ -24,6 +24,11 @@ include:
   #     - .env
   #     - forgejo/.env
   
+  # - path: glance/docker-compose.glance.yml
+  #   env_file:
+  #     - .env
+  #     - glance/.env
+  
   - path: caddy/docker-compose.caddy.yml
     env_file:
       - .env
@@ -41,11 +46,6 @@ include:
   - path: uptime-kuma/docker-compose.uptime-kuma.yml
     env_file:
       - .env
-    
-  - path: glance/docker-compose.glance.yml
-    env_file:
-      - .env
-      - glance/.env
 
   - path: vaultwarden/docker-compose.vaultwarden.yml
     env_file:
