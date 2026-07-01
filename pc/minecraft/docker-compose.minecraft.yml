@@ -24,7 +24,7 @@ services:
       SERVER_PORT: "25565"
       INIT_MEMORY: 16G
       MAX_MEMORY: 32G
-      ICON: https://m3v.dev/assets/mc-icon.webp
+      ICON: https://m3v.dev/assets/mc-icon.jpg
       OVERRIDE_ICON: "true"
       MOTD: "~~~~~~~~~~~~<『mc.m3v.dev』>~~~~~~~~~~~~"
       USE_AIKAR_FLAGS: "true"
