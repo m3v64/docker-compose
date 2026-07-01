@@ -10,8 +10,6 @@ services:
       - database
     healthcheck:
       disable: false
-    env_file:
-      - .env
     volumes:
       - ${MEDIA_ROOT}/pictures:/data
       - ${MEDIA_ROOT}/pictures:/Pictures
@@ -25,8 +23,6 @@ services:
     restart: always
     healthcheck:
       disable: false
-    env_file:
-      - .env
     volumes:
       - model-cache:/cache
 
