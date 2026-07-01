@@ -6,7 +6,7 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:2019/config/"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:2025/config/"]
       interval: 30s
       timeout: 5s
       retries: 3
