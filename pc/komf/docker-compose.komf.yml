@@ -6,6 +6,11 @@ services:
     depends_on:
       komga:
         condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       KOMF_KOMGA_BASE_URI: http://komga:25600
       KOMF_KOMGA_USER: max@m3v.dev

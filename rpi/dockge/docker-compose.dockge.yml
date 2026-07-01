@@ -3,12 +3,19 @@ services:
     image: louislam/dockge:latest
     container_name: dockge
     restart: unless-stopped
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:5001"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       DOCKGE_STACKS_DIR: ${COMPOSE_ROOT}
       DOCKGE_ENABLE_CONSOLE: "true"

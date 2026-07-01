@@ -6,6 +6,11 @@ services:
     privileged: true
     command:
       - --docker_only=true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
