@@ -19,8 +19,6 @@ services:
         max-file: "3"
     environment:
       TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
       WEBUI_PORT: "8080"
     volumes:
       - ${DATA_ROOT}\qbittorrent:/config

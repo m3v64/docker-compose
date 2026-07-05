@@ -19,8 +19,6 @@ services:
         max-file: "3"
     environment:
       TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
     volumes:
       - ${DATA_ROOT}\prowlarr:/config
     network_mode: "service:gluetun"
