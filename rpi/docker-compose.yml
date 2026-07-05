@@ -54,6 +54,7 @@ include:
   - path: silverbullet/docker-compose.silverbullet.yml
     env_file:
       - .env
+      - silverbullet/.env
 
 networks:
   net:
