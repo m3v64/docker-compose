@@ -17,7 +17,8 @@ services:
         max-file: "3"
     environment:
       TZ: ${TZ}
-      EXTENSION_REPOS: '["https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json","https://raw.githubusercontent.com/suwayomi/tachiyomi-extension/repo/index.min.json"]'
+      KCEF_ENABLED: false
+      EXTENSION_STORES: '["https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json","https://raw.githubusercontent.com/suwayomi/tachiyomi-extension/repo/index.min.json"]'
     volumes:
       - ${MEDIA_ROOT}\manga:/home/suwayomi/.local/share/Tachidesk/downloads
       - ${DATA_ROOT}\suwayomi:/home/suwayomi/.local/share/Tachidesk

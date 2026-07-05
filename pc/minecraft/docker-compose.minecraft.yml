@@ -19,8 +19,8 @@ services:
         max-file: "5"
     environment:
       EULA: "TRUE"
-      TYPE: FORGE
-      VERSION: "1.20.1"
+      TYPE: FABRIC
+      VERSION: "1.21.8"
       SERVER_PORT: "25565"
       INIT_MEMORY: 16G
       MAX_MEMORY: 32G
@@ -38,7 +38,7 @@ services:
         m3v_
       ALLOW_FLIGHT: "true"
     volumes:
-      - C:\srv\media\minecraft\kerem-finn-2026:/data
+      - ${DATA_ROOT}\minecraft\nov-25-boys:/data
     ports:
       - "25565:25565"
     networks:
