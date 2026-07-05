@@ -51,6 +51,10 @@ include:
     env_file:
       - .env
 
+  - path: silverbullet/docker-compose.silverbullet.yml
+    env_file:
+      - .env
+
 networks:
   net:
     driver: bridge
