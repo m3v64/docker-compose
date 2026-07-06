@@ -43,6 +43,11 @@ include:
       - .env
       - feishin/.env
 
+  - path: ntfy/docker-compose.ntfy.yml
+    env_file:
+      - .env
+      - ntfy/.env
+
   - path: uptime-kuma/docker-compose.uptime-kuma.yml
     env_file:
       - .env
