@@ -3,7 +3,6 @@ services:
     image: binwiederhier/ntfy:latest
     container_name: ntfy
     restart: unless-stopped
-    user: "${PUID}:${PGID}"
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     healthcheck:
@@ -23,21 +22,25 @@ services:
       TZ: ${TZ}
       NTFY_BASE_URL: https://ntfy.${DOMAIN}
       NTFY_BEHIND_PROXY: true
+      NTFY_AUTH_FILE: "/var/lib/ntfy/auth.db"
       NTFY_AUTH_DEFAULT_ACCESS: "deny-all"
       NTFY_ENABLE_LOGIN: "true"
       NTFY_REQUIRE_LOGIN: "true"
       NTFY_ATTACHMENT_FILE_SIZE_LIMIT: "95M"
       NTFY_ATTACHMENT_TOTAL_SIZE_LIMIT: "10G"
       NTFY_ATTACHMENT_EXPIRY_DURATION: "7d"
+      NTFY_CACHE_FILE: "/var/cache/ntfy/cache.db"
       NTFY_CACHE_DURATION: "28d"
       NTFY_WEB_PUSH_PUBLIC_KEY: ${NTFY_WEB_PUSH_PUBLIC_KEY}
       NTFY_WEB_PUSH_PRIVATE_KEY: ${NTFY_WEB_PUSH_PRIVATE_KEY}
+      NTFY_WEB_PUSH_FILE: /var/lib/ntfy/webpush.db
       NTFY_WEB_PUSH_EMAIL_ADDRESS: info@${DOMAIN}
+      NTFY_UPSTREAM_BASE_URL: "https://ntfy.sh"
       NTFY_AUTH_USERS: ${NTFY_AUTH_USERS}
     volumes:
       - ${DATA_ROOT}/ntfy/cache:/var/cache/ntfy
       - ${DATA_ROOT}/ntfy/lib:/var/lib/ntfy
     ports:
-      - "80:80"
+      - "2586:80"
     networks:
       - net
