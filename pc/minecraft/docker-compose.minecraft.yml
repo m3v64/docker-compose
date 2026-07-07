@@ -4,19 +4,22 @@ services:
     container_name: mc
     restart: unless-stopped
     cpus: "6.0"
+    command: []
     tty: true
     stdin_open: true
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
     healthcheck:
       test: mc-health
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 120s
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "5"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     environment:
       EULA: "TRUE"
       TYPE: FABRIC

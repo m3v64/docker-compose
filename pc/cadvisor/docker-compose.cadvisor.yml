@@ -11,6 +11,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro

@@ -3,17 +3,19 @@ services:
     image: codeberg.org/forgejo/forgejo:15
     container_name: forgejo
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
-    logging:
-      driver: json-file
-      options:
-        max-size: "20m"
-        max-file: "5"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     environment:
       USER_UID: "1000"
       USER_GID: "1000"
@@ -43,12 +45,6 @@ services:
     container_name: docker_dind
     restart: unless-stopped
     privileged: true
-    healthcheck:
-      test: ["CMD", "docker", "info"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
     command:
       - dockerd
       - -H
@@ -59,6 +55,14 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     networks:
       - net
 
@@ -73,15 +77,17 @@ services:
       forgejo:
         condition: service_healthy
     command: forgejo-runner daemon --config /data/runner-config.yml
-    links:
-      - docker-in-docker
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     environment:
       DOCKER_HOST: tcp://docker-in-docker:2375
+    links:
+      - docker-in-docker
     volumes:
       - ${DATA_ROOT}/forgejo-runner:/data
     networks:

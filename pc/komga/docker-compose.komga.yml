@@ -3,17 +3,19 @@ services:
     image: ghcr.io/gotson/komga:latest
     container_name: komga
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:25600/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     environment:
       TZ: ${TZ}
     volumes:

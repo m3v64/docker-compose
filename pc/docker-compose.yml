@@ -3,6 +3,10 @@ include:
   #   env_file:
   #     - .env
 
+  - path: watchtower/docker-compose.watchtower.yml
+    env_file:
+      - .env
+
   - path: gluetun/docker-compose.gluetun.yml
     env_file:
       - .env

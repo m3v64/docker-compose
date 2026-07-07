@@ -4,11 +4,6 @@ services:
     container_name: node-exporter
     restart: unless-stopped
     pid: host
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:9100/-/healthy"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     command:
       - --path.rootfs=/host
       - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
@@ -17,6 +12,13 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9100/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - /:/host:ro,rslave
     networks:

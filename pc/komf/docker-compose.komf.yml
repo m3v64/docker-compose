@@ -11,6 +11,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     environment:
       KOMF_KOMGA_BASE_URI: http://komga:25600
       KOMF_KOMGA_USER: max@m3v.dev

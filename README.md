@@ -33,22 +33,25 @@ I’m trying to keep the compose files consistent and easy to maintain, so the c
 - image
 - container_name
 - restart
+- depends_on
 - cpus
+- command
+- user
+- pid
 - tty
 - stdin_open
-- pid
-- user
 - privileged
 - cap_add
-- depends_on
+- logging
 - healthcheck
-- command
-- links
+- labels
 - environment
 - devices
 - volumes
 - ports
+- network_mode
 - networks
+- links
 
 ### Environment variables
 

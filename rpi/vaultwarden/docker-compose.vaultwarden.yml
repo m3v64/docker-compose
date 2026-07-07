@@ -3,22 +3,22 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
     depends_on:
       caddy:
         condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/alive"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     environment:
       DOMAIN: https://vault.${DOMAIN}
       SIGNUPS_ALLOWED: "false"

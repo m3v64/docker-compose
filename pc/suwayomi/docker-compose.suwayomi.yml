@@ -4,17 +4,19 @@ services:
     container_name: suwayomi
     restart: unless-stopped
     user: "1000:1000"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:4567/api/v1/settings/about"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     environment:
       TZ: ${TZ}
       KCEF_ENABLED: false
