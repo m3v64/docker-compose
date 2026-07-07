@@ -17,8 +17,6 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     environment:
-      USER_UID: "1000"
-      USER_GID: "1000"
       FORGEJO__DATABASE__DB_TYPE: sqlite3
       FORGEJO__DATABASE__NAME: forgejoDB
       FORGEJO__DATABASE__USER: ${FORGEJO_DB_USER}
@@ -70,7 +68,6 @@ services:
     image: data.forgejo.org/forgejo/runner:12
     container_name: forgejo-runner
     restart: unless-stopped
-    user: "1001:1001"
     depends_on:
       docker-in-docker:
         condition: service_healthy
