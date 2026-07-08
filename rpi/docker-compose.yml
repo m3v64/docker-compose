@@ -37,6 +37,7 @@ include:
   - path: watchtower/docker-compose.watchtower.yml
     env_file:
       - .env
+      - watchtower/.env
 
   - path: feishin/docker-compose.feishin.yml
     env_file:

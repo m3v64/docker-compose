@@ -5,6 +5,9 @@ services:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     container_name: immich_server
     restart: always
+    env_file:
+      - .env
+      - ../.env
     depends_on:
       redis:
         condition: service_healthy
@@ -30,6 +33,9 @@ services:
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
     container_name: immich_machine_learning
     restart: always
+    env_file:
+      - .env
+      - ../.env
     logging:
       driver: json-file
       options:
@@ -46,6 +52,9 @@ services:
     image: docker.io/valkey/valkey:8@sha256:81db6d39e1bba3b3ff32bd3a1b19a6d69690f94a3954ec131277b9a26b95b3aa
     container_name: immich_redis
     restart: always
+    env_file:
+      - .env
+      - ../.env
     logging:
       driver: json-file
       options:

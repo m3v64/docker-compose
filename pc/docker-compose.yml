@@ -6,6 +6,7 @@ include:
   - path: watchtower/docker-compose.watchtower.yml
     env_file:
       - .env
+      - watchtower/.env
 
   - path: gluetun/docker-compose.gluetun.yml
     env_file:
