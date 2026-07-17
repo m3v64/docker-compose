@@ -17,75 +17,118 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     environment:
-      FORGEJO__DATABASE__DB_TYPE: sqlite3
-      FORGEJO__DATABASE__NAME: forgejoDB
-      FORGEJO__DATABASE__USER: ${FORGEJO_DB_USER}
-      FORGEJO__DATABASE__PASSWD: ${FORGEJO_DB_PASS}
-      FORGEJO__DATABASE__SQLITE_JOURNAL_MODE: WAL
-      FORGEJO__CACHE__ADAPTER: twoqueue
-      FORGEJO__CACHE__HOST: '{"size":100, "recent_ratio":0.25, "ghost_ratio":0.5}'
-      FORGEJO__REPOSITORY_SIGNING__DEFAULT_TRUST_MODEL: committer
-      FORGEJO__SECURITY__LOGIN_REMEMBER_DAYS: "90"
-      FORGEJO__SERVICE__ENABLE_CAPTCHA: "true"
-      FORGEJO__SERVICE__USERNAME_COOLDOWN_PERIOD: "14"
-      FORGEJO__SERVICE__MAX_USER_REDIRECTS: "3"
+      FORGEJO____APP_NAME: ${FORGEJO_APP_NAME}
+      FORGEJO____APP_SLOGAN: ${FORGEJO_APP_SLOGAN}
+      FORGEJO__ui.meta__AUTHOR: ${FORGEJO_AUTHOR}
+      FORGEJO__ui.meta__DESCRIPTION: ${FORGEJO_DESCRIPTION}
+      FORGEJO__server__PROTOCOL: https
+      FORGEJO__server__DOMAIN: git.${DOMAIN}
+      FORGEJO__server__ROOT_URL: "https://git.${DOMAIN}/"
+      FORGEJO__server__SSH_DOMAIN: git.${DOMAIN}
+      FORGEJO__server__START_SSH_SERVER: "true"
+      FORGEJO__repository__DISABLE_HTTP_GIT: "true"
+      FORGEJO__repository__GO_GET_CLONE_URL_PROTOCOL: ssh
+      FORGEJO__repository__ENABLE_PUSH_CREATE_USER: "true"
+      FORGEJO__repository__DEFAULT_PRIVATE: "private"
+      FORGEJO__repository__PREFERRED_LICENSES: MIT,Apache-2.0
+      FORGEJO__repository__DEFAULT_BRANCH: main
+      FORGEJO__repository.signing__DEFAULT_TRUST_MODEL: committer
+      FORGEJO__repository.signing__SIGNING_NAME: ${FORGEJO_APP_NAME}
+      FORGEJO__repository.signing__SIGNING_EMAIL: git@${DOMAIN}
+      FORGEJO__database__DB_TYPE: sqlite3
+      FORGEJO__database__PATH: /data/forgejo.db
+      FORGEJO__mailer__ENABLED: "true"
+      FORGEJO__mailer__SMTP_ADDR: ${FORGEJO_SMTP_ADDRESS}
+      FORGEJO__mailer__SMTP_PORT: "587"
+      FORGEJO__mailer__USER: ${FORGEJO_SMTP_USER}
+      FORGEJO__mailer__PASSWD: ${FORGEJO_SMTP_PASSWORD}
+      FORGEJO__mailer__FROM: ${FORGEJO_APP_NAME} <git@${DOMAIN}>
+      FORGEJO__mailer__PROTOCOL: smtp+starttls
+      FORGEJO__security__INSTALL_LOCK: "true"
+      FORGEJO__security__LOGIN_REMEMBER_DAYS: "90"
+      FORGEJO__security__GLOBAL_TWO_FACTOR_REQUIREMENT: all
+      FORGEJO__security__MIN_PASSWORD_LENGTH: "8"
+      FORGEJO__security__ENABLE_REVERSE_PROXY_AUTHENTICATION: "true"
+      FORGEJO__security__REVERSE_PROXY_TRUSTED_PROXIES: "172.16.0.0/12,10.0.0.0/8,192.168.0.0/16"
+      FORGEJO__openid__ENABLE_OPENID_SIGNIN: "false"
+      FORGEJO__openid__ENABLE_OPENID_SIGNUP: "false"
+      FORGEJO__federation__ENABLED: "false"
+      FORGEJO__cors__ENABLED: "true"
+      FORGEJO__cors__ALLOW_DOMAIN: "https://git.${DOMAIN}"
+      FORGEJO__session__PROVIDER: db
+      FORGEJO__indexer__REPO_INDEXER_ENABLED: "true"
+      FORGEJO__indexer__REPO_INDEXER_PATH: /data/indexers/repos.bleve
+      FORGEJO__attachment__PATH: /data/attachments
+      FORGEJO__attachment__MAX_SIZE: "100"
+      FORGEJO__attachment__MAX_FILES: "10"
+      FORGEJO__picture__DISABLE_GRAVATAR: "true"
+      FORGEJO__cache__ADAPTER: twoqueue
+      FORGEJO__cache__HOST: '{"size":100,"recent_ratio":0.25,"ghost_ratio":0.5}'
+      FORGEJO__service__DISABLE_REGISTRATION: "true"
+      FORGEJO__service__ENABLE_NOTIFY_MAIL: "true"
+      FORGEJO__service__DEFAULT_ALLOW_CREATE_ORGANIZATION: "false"
+      FORGEJO__service__USERNAME_COOLDOWN_PERIOD: "14"
+      FORGEJO__service__MAX_USER_REDIRECTS: "1"
+      FORGEJO__actions__ENABLED: "true"
+      FORGEJO__packages__ENABLED: "true"
     volumes:
       - ${DATA_ROOT}/forgejo:/data
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "3000:3000"
-      - "222:22"
+      - "22:22"
     networks:
       - net
 
-  docker-in-docker:
-    image: docker:dind
-    container_name: docker_dind
-    restart: unless-stopped
-    privileged: true
-    command:
-      - dockerd
-      - -H
-      - tcp://0.0.0.0:2375
-      - --tls=false
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-    healthcheck:
-      test: ["CMD", "docker", "info"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-    networks:
-      - net
+  # docker-in-docker:
+  #   image: docker:dind
+  #   container_name: docker_dind
+  #   restart: unless-stopped
+  #   privileged: true
+  #   command:
+  #     - dockerd
+  #     - -H
+  #     - tcp://0.0.0.0:2376
+  #     - --tls=true
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   healthcheck:
+  #     test: ["CMD", "docker", "info"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 30s
+  #   labels:
+  #     com.centurylinklabs.watchtower.enable: "true"
+  #   volumes:
+  #     - ${DATA_ROOT}/forgejo-docker:/var/lib/docker
+  #   networks:
+  #     - net
 
-  runner:
-    image: data.forgejo.org/forgejo/runner:12
-    container_name: forgejo-runner
-    restart: unless-stopped
-    depends_on:
-      docker-in-docker:
-        condition: service_healthy
-      forgejo:
-        condition: service_healthy
-    command: forgejo-runner daemon --config /data/runner-config.yml
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-    environment:
-      DOCKER_HOST: tcp://docker-in-docker:2375
-    links:
-      - docker-in-docker
-    volumes:
-      - ${DATA_ROOT}/forgejo-runner:/data
-    networks:
-      - net
+  # runner:
+  #   image: data.forgejo.org/forgejo/runner:12
+  #   container_name: forgejo-runner
+  #   restart: unless-stopped
+  #   depends_on:
+  #     docker-in-docker:
+  #       condition: service_healthy
+  #     forgejo:
+  #       condition: service_healthy
+  #   command: '/bin/sh -c "while : ; do sleep 1 ; done ;"'
+  #   # command: forgejo-runner daemon --config /data/runner-config.yml
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   labels:
+  #     com.centurylinklabs.watchtower.enable: "true"
+  #   environment:
+  #     DOCKER_HOST: tcp://docker-in-docker:2375
+  #   volumes:
+  #     - ${DATA_ROOT}/forgejo-runner:/data
+  #   networks:
+  #     - net

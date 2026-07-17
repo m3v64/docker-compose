@@ -20,10 +20,10 @@ include:
   #     - .env
   #     - forgejo/.env
   
-  # - path: glance/docker-compose.glance.yml
-  #   env_file:
-  #     - .env
-  #     - glance/.env
+  - path: glance/docker-compose.glance.yml
+    env_file:
+      - .env
+      - glance/.env
   
   - path: caddy/docker-compose.caddy.yml
     env_file:
