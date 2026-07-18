@@ -25,10 +25,11 @@ services:
       FORGEJO__server__DOMAIN: git.${DOMAIN}
       FORGEJO__server__ROOT_URL: "https://git.${DOMAIN}/"
       FORGEJO__server__SSH_DOMAIN: git.${DOMAIN}
-      FORGEJO__server__START_SSH_SERVER: "false"
+      FORGEJO__server__START_SSH_SERVER: "true"
       FORGEJO__server__SSH_LISTEN_PORT: "22"
       FORGEJO__server__SSH_PORT: "222"
-      FORGEJO__repository__DISABLE_HTTP_GIT: "true"
+      FORGEJO__server__LFS_START_SERVER: "true"
+      FORGEJO__repository__DISABLE_HTTP_GIT: "false"
       FORGEJO__repository__GO_GET_CLONE_URL_PROTOCOL: ssh
       FORGEJO__repository__ENABLE_PUSH_CREATE_USER: "true"
       FORGEJO__repository__DEFAULT_PRIVATE: "private"
@@ -37,8 +38,11 @@ services:
       FORGEJO__repository.signing__DEFAULT_TRUST_MODEL: committer
       FORGEJO__repository.signing__SIGNING_NAME: ${FORGEJO_APP_NAME}
       FORGEJO__repository.signing__SIGNING_EMAIL: git@${DOMAIN}
+      FORGEJO__lfs__STORAGE_TYPE: local
+      FORGEJO__lfs__PATH: /data/lfs
       FORGEJO__database__DB_TYPE: sqlite3
       FORGEJO__database__PATH: /data/forgejo.db
+      FORGEJO__database__SQLITE_JOURNAL_MODE: WAL
       FORGEJO__mailer__ENABLED: "true"
       FORGEJO__mailer__SMTP_ADDR: ${FORGEJO_SMTP_ADDRESS}
       FORGEJO__mailer__SMTP_PORT: "587"
@@ -58,6 +62,7 @@ services:
       FORGEJO__cors__ENABLED: "true"
       FORGEJO__cors__ALLOW_DOMAIN: "https://git.${DOMAIN}"
       FORGEJO__session__PROVIDER: db
+      FORGEJO__session__COOKIE_SECURE: "true"
       FORGEJO__indexer__REPO_INDEXER_ENABLED: "true"
       FORGEJO__indexer__REPO_INDEXER_PATH: /data/indexers/repos.bleve
       FORGEJO__attachment__PATH: /data/attachments
@@ -72,6 +77,7 @@ services:
       FORGEJO__service__USERNAME_COOLDOWN_PERIOD: "14"
       FORGEJO__service__MAX_USER_REDIRECTS: "1"
       FORGEJO__actions__ENABLED: "true"
+      FORGEJO__actions__DEFAULT_ACTIONS_URL: "https://github.com/"
       FORGEJO__packages__ENABLED: "true"
     volumes:
       - ${DATA_ROOT}/forgejo:/data
