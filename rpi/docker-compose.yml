@@ -15,15 +15,15 @@ include:
   #   env_file:
   #     - .env
 
+  # - path: glance/docker-compose.glance.yml
+  #   env_file:
+  #     - .env
+  #     - glance/.env
+
   - path: forgejo/docker-compose.forgejo.yml
     env_file:
       - .env
       - forgejo/.env
-  
-  - path: glance/docker-compose.glance.yml
-    env_file:
-      - .env
-      - glance/.env
   
   - path: caddy/docker-compose.caddy.yml
     env_file:

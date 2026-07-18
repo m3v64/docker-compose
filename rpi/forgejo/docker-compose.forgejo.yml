@@ -21,11 +21,13 @@ services:
       FORGEJO____APP_SLOGAN: ${FORGEJO_APP_SLOGAN}
       FORGEJO__ui.meta__AUTHOR: ${FORGEJO_AUTHOR}
       FORGEJO__ui.meta__DESCRIPTION: ${FORGEJO_DESCRIPTION}
-      FORGEJO__server__PROTOCOL: https
+      FORGEJO__server__PROTOCOL: http
       FORGEJO__server__DOMAIN: git.${DOMAIN}
       FORGEJO__server__ROOT_URL: "https://git.${DOMAIN}/"
       FORGEJO__server__SSH_DOMAIN: git.${DOMAIN}
-      FORGEJO__server__START_SSH_SERVER: "true"
+      FORGEJO__server__START_SSH_SERVER: "false"
+      FORGEJO__server__SSH_LISTEN_PORT: "22"
+      FORGEJO__server__SSH_PORT: "222"
       FORGEJO__repository__DISABLE_HTTP_GIT: "true"
       FORGEJO__repository__GO_GET_CLONE_URL_PROTOCOL: ssh
       FORGEJO__repository__ENABLE_PUSH_CREATE_USER: "true"
@@ -76,59 +78,56 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "3000:3000"
-      - "22:22"
+      - "222:22"
     networks:
       - net
 
-  # docker-in-docker:
-  #   image: docker:dind
-  #   container_name: docker_dind
-  #   restart: unless-stopped
-  #   privileged: true
-  #   command:
-  #     - dockerd
-  #     - -H
-  #     - tcp://0.0.0.0:2376
-  #     - --tls=true
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "3"
-  #   healthcheck:
-  #     test: ["CMD", "docker", "info"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 30s
-  #   labels:
-  #     com.centurylinklabs.watchtower.enable: "true"
-  #   volumes:
-  #     - ${DATA_ROOT}/forgejo-docker:/var/lib/docker
-  #   networks:
-  #     - net
+  docker-in-docker:
+    image: docker:dind
+    container_name: docker-in-docker
+    restart: unless-stopped
+    privileged: true
+    command:
+      - dockerd
+      - -H
+      - tcp://0.0.0.0:2375
+      - --tls=false
+    environment:
+      DOCKER_HOST: tcp://localhost:2375
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    volumes:
+      - ${DATA_ROOT}/forgejo-docker:/var/lib/docker
+    networks:
+      - net
 
-  # runner:
-  #   image: data.forgejo.org/forgejo/runner:12
-  #   container_name: forgejo-runner
-  #   restart: unless-stopped
-  #   depends_on:
-  #     docker-in-docker:
-  #       condition: service_healthy
-  #     forgejo:
-  #       condition: service_healthy
-  #   command: '/bin/sh -c "while : ; do sleep 1 ; done ;"'
-  #   # command: forgejo-runner daemon --config /data/runner-config.yml
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "3"
-  #   labels:
-  #     com.centurylinklabs.watchtower.enable: "true"
-  #   environment:
-  #     DOCKER_HOST: tcp://docker-in-docker:2375
-  #   volumes:
-  #     - ${DATA_ROOT}/forgejo-runner:/data
-  #   networks:
-  #     - net
+  forgejo-runner:
+    image: data.forgejo.org/forgejo/runner:12
+    container_name: forgejo-runner
+    restart: unless-stopped
+    depends_on:
+      docker-in-docker:
+        condition: service_healthy
+      forgejo:
+        condition: service_healthy
+    command: forgejo-runner daemon --config /config.yaml
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    environment:
+      DOCKER_HOST: tcp://docker-in-docker:2375
+    volumes:
+      - ${DATA_ROOT}/forgejo-runner:/data
+      - ${DATA_ROOT}/forgejo-runner/config.yaml:/config.yaml
+    networks:
+      - net
