@@ -25,7 +25,7 @@ services:
       FORGEJO__server__DOMAIN: git.${DOMAIN}
       FORGEJO__server__ROOT_URL: "https://git.${DOMAIN}/"
       FORGEJO__server__SSH_DOMAIN: git.${DOMAIN}
-      FORGEJO__server__START_SSH_SERVER: "true"
+      FORGEJO__server__START_SSH_SERVER: "false"
       FORGEJO__server__SSH_LISTEN_PORT: "22"
       FORGEJO__server__SSH_PORT: "222"
       FORGEJO__server__LFS_START_SERVER: "true"
