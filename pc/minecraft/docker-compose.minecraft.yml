@@ -1,7 +1,7 @@
 services:
-  mc:
+  minecraft:
     image: itzg/minecraft-server:latest
-    container_name: mc
+    container_name: minecraft
     restart: unless-stopped
     cpus: "6.0"
     command: []

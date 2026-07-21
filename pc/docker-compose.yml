@@ -3,6 +3,10 @@ include:
   #   env_file:
   #     - .env
 
+  # - path: minecraft/docker-compose.minecraft.yml
+  #   env_file:
+  #     - .env
+
   - path: watchtower/docker-compose.watchtower.yml
     env_file:
       - .env
@@ -56,10 +60,6 @@ include:
       - komf/.env
 
   - path: suwayomi/docker-compose.suwayomi.yml
-    env_file:
-      - .env
-
-  - path: minecraft/docker-compose.minecraft.yml
     env_file:
       - .env
 
