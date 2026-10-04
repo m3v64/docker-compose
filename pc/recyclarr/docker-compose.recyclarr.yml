@@ -1,6 +1,6 @@
 services:
   recyclarr:
-    image: ghcr.io/recyclarr/recyclarr:latest
+    image: ghcr.io/recyclarr/recyclarr:edge
     container_name: recyclarr
     restart: unless-stopped
     depends_on:
