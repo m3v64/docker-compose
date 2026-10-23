@@ -19,18 +19,18 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     environment:
-      MTU: "1400"
-      DNS_ADDRESS: 1.1.1.1
+      DNS_UPSTREAM_PLAIN_ADDRESSES: 1.1.1.1:53
       VPN_SERVICE_PROVIDER: private internet access
+      SERVER_REGIONS: ${SERVER_REGIONS}
+      UPDATER_PERIOD: 24h
       OPENVPN_USER: ${PIA_USER}
       OPENVPN_PASSWORD: ${PIA_PASSWORD}
-      # SERVER_REGIONS: ${SERVER_REGIONS}
       PORT_FORWARD_ONLY: "true"
       VPN_PORT_FORWARDING: "on"
       VPN_PORT_FORWARDING_UP_COMMAND: >-
-        /bin/sh -c 'for i in 1 2 3 4 5; do wget -qO- --keep-session-cookies --save-cookies /tmp/qbit_sid.txt --post-data "username=${QB_USERNAME}&password=${QB_PASSWORD}" http://127.0.0.1:8080/api/v2/auth/login && break || sleep 5; done && wget -qO- --load-cookies /tmp/qbit_sid.txt --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
+        /bin/sh -c 'for i in 1 2 3 4 5; do wget -qO- --post-data "json={\"listen_port\":{{PORT}},\"current_network_interface\":\"{{VPN_INTERFACE}}\",\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences && break || sleep 5; done'
       VPN_PORT_FORWARDING_DOWN_COMMAND: >-
-        /bin/sh -c 'wget -qO- --load-cookies /tmp/qbit_sid.txt --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo\",\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
+        /bin/sh -c 'wget -qO- --post-data "json={\"listen_port\":0,\"current_network_interface\":\"lo\",\"upnp\":false}" http://127.0.0.1:8080/api/v2/app/setPreferences'
       TZ: ${TZ}
     devices:
       - /dev/net/tun:/dev/net/tun
