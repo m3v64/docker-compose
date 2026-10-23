@@ -19,6 +19,12 @@ services:
     environment:
       TZ: ${TZ}
       SB_USER: ${SB_USERNAME}:${SB_PASSWORD}
+      SB_AUTH_TOKEN: ${SB_AUTH_TOKEN}
+      SB_LOCKOUT_LIMIT: 10
+      SB_LOCKOUT_TIME: 60
+      SB_REMEMBER_ME_HOURS: 168
+      SB_NAME: "${SB_NAME}"
+      SB_DESCRIPTION: "${SB_DESCRIPTION}"
     volumes:
       - ${DATA_ROOT}/silverbullet:/space
     ports:
